@@ -1,0 +1,50 @@
+在 Screeps 中，内存（Memory）是一个全局对象，用于存储和管理游戏中的各种数据。你可以在内存中保存自定义的数据结构，以便在游戏的不同周期中使用。下面是一些关于 Screeps 内存用法的常见示例：
+
+存储 creep 的角色和状态：
+
+
+// 在 Memory 中为每个 creep 存储角色和工作状态
+Memory.creeps['Worker1'] = {
+    role: 'harvester',
+    working: false
+};
+存储房间的信息：
+
+
+// 在 Memory 中为每个房间存储信息
+Memory.rooms['W1N1'] = {
+    sources: ['id1', 'id2'],
+    controller: 'id3'
+};
+存储全局变量：
+
+
+// 在 Memory 中存储全局变量
+Memory.global = {
+    spawnQueue: ['Worker1', 'Worker2'],
+    constructionSites: [{x: 10, y: 15, type: 'road'}, {x: 11, y: 16, type: 'extension'}]
+};
+清理内存：
+
+
+// 清理内存中不存在的 creep 记录
+for (let name in Memory.creeps) {
+    if (!Game.creeps[name]) {
+        delete Memory.creeps[name];
+    }
+}
+读取内存中的数据：
+
+
+// 从内存中读取房间信息
+let roomInfo = Memory.rooms['W1N1'];
+更新内存中的数据：
+
+
+// 更新内存中的 creep 工作状态
+Memory.creeps['Worker1'].working = true;
+重置内存：
+
+
+// 重置内存中的所有数据
+Memory = {};
