@@ -1,0 +1,28 @@
+在你提供的代码中，updateWorker 函数用于更新每个 creep 的状态和执行相应的行为。这个函数通过检查 creep 的状态（working）和能量存储情况来决定 creep 的行为。这里是 updateWorker 函数的实现：
+
+
+function updateWorker(creep) {
+    if (!creep) return;
+
+    // 如果工人正在挖矿并且存储满了，则转变为转移能量的状态
+    if (creep.memory.working && creep.store.getFreeCapacity() === 0) {
+        creep.memory.working = false;
+    }
+    // 如果工人正在转移能量并且存储空了，则转变为挖矿的状态
+    if (!creep.memory.working && creep.store[RESOURCE_ENERGY] === 0) {
+        creep.memory.working = true;
+    }
+
+    // 根据工人的状态执行相应的行为
+    if (creep.memory.working) {
+        creep.moveTo(source);
+        creep.harvest(source);
+    } else {
+        if (creep.transfer(controller, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+            creep.moveTo(controller);
+        }
+    }
+}
+在这个函数中，首先检查传入的 creep 是否存在。然后根据 creep 的状态和存储情况更新其 working 状态。如果 creep 正在工作且存储已满，则将其状态设置为不工作；如果 creep 不在工作且存储为空，则将其状态设置为工作。最后根据 creep 的状态执行相应的行为：如果正在工作，则移动到资源（source）并采集；如果不在工作，则移动到控制器（controller）并转移能量。
+
+你可以根据需要修改 updateWorker 函数来实现不同的行为逻辑或添加其他功能。
